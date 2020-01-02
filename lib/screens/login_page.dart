@@ -7,6 +7,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _obscure = true;
+  String _pass;
+  void _toggle() {
+    setState(() {
+      _obscure = !_obscure;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
         width: MediaQuery.of(context).size.width,
         child: Center(
           child: ListView(
+            physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             children: <Widget>[
               SizedBox(
@@ -42,6 +51,8 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 color: Colors.grey[50],
                 child: TextFormField(
+                  cursorColor: Colors.grey,
+                  cursorWidth: 1,
                   style: TextStyle(color: Colors.black, fontSize: 14),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -66,10 +77,18 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 color: Colors.grey[50],
                 child: TextFormField(
-                  obscureText: true,
+                  cursorColor: Colors.grey,
+                  cursorWidth: 1,
+                  onSaved: (val) => _pass = val,
+                  obscureText: _obscure,
                   style: TextStyle(color: Colors.black, fontSize: 14),
                   decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
+                    suffixIcon: IconButton(
+                      onPressed: _toggle,
+                      icon: _obscure
+                          ? Icon(Icons.visibility, color: Colors.blue)
+                          : Icon(Icons.visibility_off, color: Colors.grey),
+                    ),
                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     hintText: "Password",
                     hintStyle: TextStyle(
@@ -101,27 +120,42 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "Log In",
-                        style: TextStyle(color: Colors.white),
+                      FlatButton(
+                        child: Text(
+                          "Log In",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: null,
                       )
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              RichText(
-                textAlign: TextAlign.center,
-                text: new TextSpan(
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
-                  children: <TextSpan>[
-                    new TextSpan(text: "Forgot your login details?"),
-                    new TextSpan(
-                        text: " Get help signing in",
-                        style: TextStyle(
-                            color: Color(0xff003366),
-                            fontWeight: FontWeight.bold))
-                  ],
+              SizedBox(height: 5),
+              ButtonTheme(
+                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                minWidth: 0,
+                height: 0,
+                child: FlatButton(
+                  onPressed: () {},
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: new TextSpan(
+                      style: TextStyle(fontSize: 13, color: Colors.grey),
+                      children: <TextSpan>[
+                        new TextSpan(text: "Forgot your login details?"),
+                        new TextSpan(
+                            text: " Get help signing in.",
+                            style: TextStyle(
+                                color: Color(0xff003366),
+                                fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 15),
@@ -179,19 +213,28 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
-              RichText(
-                textAlign: TextAlign.center,
-                text: new TextSpan(
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
-                  children: <TextSpan>[
-                    new TextSpan(text: "Don't have an account?"),
-                    new TextSpan(
-                        text: " Sign up.",
-                        style: TextStyle(
-                            color: Color(0xff003366),
-                            fontWeight: FontWeight.bold))
-                  ],
+              SizedBox(height: 20),
+              ButtonTheme(
+                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                minWidth: 0,
+                height: 0,
+                child: FlatButton(
+                  onPressed: () {},
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: new TextSpan(
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      children: <TextSpan>[
+                        new TextSpan(text: "Don't have an account?"),
+                        new TextSpan(
+                            text: " Sign up.",
+                            style: TextStyle(
+                                color: Color(0xff003366),
+                                fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
